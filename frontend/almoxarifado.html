@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Pro — Almoxarifado & Estoque</title>
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-dark: #6d28d9;
+      --primary-light: #f5f3ff;
+      --success: #059669;
+      --success-light: #ecfdf5;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --dark: #0f172a;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --white: #ffffff;
+      --radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.14);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background: #faf5ff;
+      color: var(--slate-700);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: var(--dark);
+      color: var(--white);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .logo-icon {
+      font-size: 24px;
+      background: rgba(255, 255, 255, 0.12);
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .nav-brand span {
+      font-size: 12px;
+      color: var(--slate-400);
+      display: block;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .user-pill {
+      background: rgba(124, 58, 237, 0.3);
+      border: 1px solid rgba(124, 58, 237, 0.5);
+      color: #c4b5fd;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 1300px;
+      width: 94%;
+      margin: 24px auto 40px;
+      flex: 1;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-icon {
+      font-size: 26px;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-icon.purple {
+      background: #ede9fe;
+    }
+
+    .stat-icon.green {
+      background: #d1fae5;
+    }
+
+    .stat-icon.orange {
+      background: #fef3c7;
+    }
+
+    .stat-icon.red {
+      background: #fee2e2;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--slate-400);
+      margin-top: 3px;
+    }
+
+    /* ── MAIN GRID ── */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 1050px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--slate-200);
+      background: #fafafa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-body {
+      padding: 22px;
+    }
+
+    /* ── FORM ── */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-700);
+      margin-bottom: 5px;
+    }
+
+    .form-group label small {
+      font-weight: 400;
+      color: var(--slate-400);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--dark);
+      transition: all 0.2s;
+      background: var(--white);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    }
+
+    .btn-full {
+      width: 100%;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-purple {
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    }
+
+    .btn-purple:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-purple:active {
+      transform: none;
+    }
+
+    /* ── TIPO ENTRADA (tabs) ── */
+    .entrada-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--slate-200);
+      background: var(--slate-100);
+      color: var(--slate-600);
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* ── TABELA DE ESTOQUE ── */
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background: var(--slate-100);
+      color: var(--slate-700);
+      border: 1px solid var(--slate-200);
+    }
+
+    .btn-secondary:hover {
+      background: var(--slate-200);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: var(--white);
+    }
+
+    .btn-success:hover {
+      background: #047857;
+    }
+
+    .btn-danger-sm {
+      background: #fee2e2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .btn-danger-sm:hover {
+      background: #fecaca;
+    }
+
+    /* Filter chips */
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .chip {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.2s;
+      background: var(--slate-100);
+      color: var(--slate-600);
+    }
+
+    .chip:hover {
+      background: var(--slate-200);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+    }
+
+    /* Estoque table */
+    .estoque-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .estoque-table th {
+      background: #f8fafc;
+      padding: 11px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--slate-400);
+      border-bottom: 1.5px solid var(--slate-200);
+      text-align: left;
+    }
+
+    .estoque-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--slate-100);
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    .estoque-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .estoque-table tr:hover td {
+      background: #faf5ff;
+    }
+
+    .med-name {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .med-cat {
+      font-size: 12px;
+      color: var(--slate-400);
+      margin-top: 2px;
+    }
+
+    .stock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stock-ok {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .stock-low {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .stock-critical {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .stock-empty {
+      background: var(--slate-100);
+      color: var(--slate-400);
+    }
+
+    .action-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    /* Alerta */
+    .alerta-estoque {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Histórico */
+    .hist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .hist-item:last-child {
+      border-bottom: none;
+    }
+
+    .hist-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .hist-icon.entrada {
+      background: #d1fae5;
+      color: var(--success);
+    }
+
+    .hist-icon.remocao {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .hist-info {
+      flex: 1;
+    }
+
+    .hist-med {
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 14px;
+    }
+
+    .hist-sub {
+      font-size: 12px;
+      color: var(--slate-400);
+      margin-top: 2px;
+    }
+
+    .hist-qty-pos {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--success);
+      white-space: nowrap;
+    }
+
+    .hist-qty-neg {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--danger);
+      white-space: nowrap;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 14px 20px;
+      border-radius: 10px;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 200;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 380px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-success {
+      background: #059669;
+    }
+
+    .toast-error {
+      background: #dc2626;
+    }
+
+    .toast-warning {
+      background: #d97706;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--slate-400);
+    }
+
+    .empty-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    /* Modal de reposição */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 28px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow-lg);
+      animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="logo-icon">📦</div>
+      <div>
+        <h1>Hospital Pro — Almoxarifado</h1>
+        <span>Gestão de Entrada e Controle de Estoque</span>
+      </div>
+    </div>
+    <div class="nav-user">
+      <span class="user-pill" id="nomeUsuario">📦 Almoxarifado</span>
+      <a href="index.html" class="btn-nav">🚪 Sair</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ── ALERTA ── -->
+    <div class="alerta-estoque" id="alertaEstoque"
+     style="display:none">
+      ⚠️ <strong>Atenção:</strong> <span id="alertaTexto">
+        
+      </span>
+    </div>
+
+    <!-- ── STATS ── -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-icon purple">📦</div>
+        <div>
+          <div class="stat-value" id="statItens">—</div>
+          <div class="stat-label">Tipos Cadastrados</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">🟢</div>
+        <div>
+          <div class="stat-value" id="statOk">—</div>
+          <div class="stat-label">Estoque Normal</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">⚠️</div>
+        <div>
+          <div class="stat-value" id="statBaixo">—</div>
+          <div class="stat-label">Estoque Baixo (MENOR QUE10)</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">🚫</div>
+        <div>
+          <div class="stat-value" id="statZerado">—</div>
+          <div class="stat-label">Zerados / Esgotados</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MAIN GRID ── -->
+    <div class="main-grid">
+
+      <!-- ─── COLUNA ESQUERDA: FORMULÁRIO ENTRADA ─── -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <h2>📥 Entrada de Medicamentos</h2>
+          </div>
+          <div class="card-body">
+
+            <!-- Tabs: Novo ou Repor -->
+            <div class="entrada-tabs">
+              <button class="tab-btn active" id="tabNovo" 
+              onclick="setTab('novo')">➕ Novo 
+              Medicamento</button>
+              <button class="tab-btn" id="tabRepor" onclick="setTab
+            ('repor')">📦 Repor Existente</button>
+            </div>
+
+            <!-- PAINEL: Cadastrar Novo -->
+            <div id="painelNovo">
+              <div class="form-group">
+                <label for="emNome">Nome do Medicamento</label>
+                <input type="text" id="emNome" class="form-control" 
+                placeholder="Ex: Paracetamol 750mg"
+                  autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="emQtd">Quantidade
+                  <small>(unidades a adicionar)</small></label>
+                <input type="number" id="emQtd" class="form-control"
+                 value="10" min="1">
+              </div>
+              <div class="form-group">
+                <label for="emUnidade">Tipo de Unidade</label>
+                <select id="emUnidade" class="form-control">
+                  <option value="comprimidos">Comprimidos</option>
+                  <option value="cápsulas">Cápsulas</option>
+                  <option value="frascos">Frascos</option>
+                  <option value="ampolas">Ampolas</option>
+                  <option value="sachês">Sachês</option>
+                  <option value="unidades">Unidades</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="emCategoria">Categoria 
+                  Farmacológica</label>
+                <select id="emCategoria" class="form-control">
+                  <option value="Analgésico/Antipirético">
+                    Analgésico /
+                    Antipirético</option>
+                  <option value="Antibiótico">Antibiótico</option>
+                  <option value="Anti-inflamatório">Anti-
+                    inflamatório</option>
+                  <option value="Antialérgico">Antialérgico</option>
+                  <option value="Protetor Gástrico">Protetor 
+                    Gástrico</option>
+                  <option value="Antiespasmódico">
+                    Antiespasmódico</option>
+                  <option value="Antiemético">Antiemético</option>
+                  <option value="Solução">Solução</option>
+                  <option value="Vitamina/Suplemento">Vitamina /
+                    Suplemento</option>
+                  <option value="Geral">Geral</option>
+                </select>
+              </div>
+              <button class="btn-full btn-purple" onclick="darEntrada()">
+                📥 Registrar Entrada no Estoque
+              </button>
+            </div>
+
+            <!-- PAINEL: Repor Existente -->
+            <div id="painelRepor" style="display:none">
+              <div class="form-group">
+                <label for="selReporMed">Selecionar Medicamento</label>
+                <select id="selReporMed" class="form-control">
+                  <option value="">-- Selecione --</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="reporQtd">Quantidade a Adicionar</label>
+                <input type="number" id="reporQtd" 
+                class="form-control" value="10" min="1">
+              </div>
+              <div class="form-group">
+                <label for="reporObs">Observação <small>
+                  (opcional)</small></label>
+                <input type="text" id="reporObs"
+                class="form-control" placeholder="Ex:
+                 Nota fiscal NF-001">
+              </div>
+              <button class="btn-full btn-purple"
+               onclick="reporEstoque()">
+                ➕ Adicionar ao Estoque Existente
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Histórico de Entradas -->
+        <div class="card" style="margin-top:20px">
+          <div class="card-header">
+            <h2>📋 Últimas Entradas Registradas</h2>
+            <button class="btn-sm btn-secondary" 
+            onclick="carregarHistoricoEntradas()">🔄</button>
+          </div>
+          <div class="card-body" id="historicoEntradas">
+            <div class="empty-state">
+              <div class="empty-icon">📋</div>
+              <p>Nenhuma entrada registrada ainda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── COLUNA DIREITA: ESTOQUE ATUAL ─── -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <h2>📊 Estoque Atual de Medicamentos</h2>
+            <button class="btn-sm btn-secondary" onclick="carregarEstoque()">🔄 Atualizar</button>
+          </div>
+          <div class="card-body">
+
+            <div class="search-bar">
+              <input type="text" class="search-input" id="buscaMed" placeholder="🔍 Buscar medicamento..."
+                oninput="filtrarTabela()">
+            </div>
+
+            <div class="filter-chips" id="filterChips">
+              <span class="chip active" onclick="setFiltro('todos', this)">Todos</span>
+            </div>
+
+            <div style="overflow-x:auto">
+              <table class="estoque-table">
+                <thead>
+                  <tr>
+                    <th>Medicamento</th>
+                    <th>Categoria</th>
+                    <th>Disponível</th>
+                    <th>Unidade</th>
+                    <th style="text-align:right">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaEstoque">
+                  <tr>
+                    <td colspan="5">
+                      <div class="empty-state">
+                        <div class="empty-icon">⏳</div>
+                        <p>Carregando...</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal: Editar quantidade manualmente -->
+  <div class="modal-overlay" id="modalEditar">
+    <div class="modal-box">
+      <div class="modal-title">✏️ Editar Estoque</div>
+      <div class="form-group">
+        <label id="modalMedNome" style="font-size:15px; color:var(--dark); margin-bottom:12px; display:block"></label>
+        <label>Quantidade a adicionar (negativo para remover):</label>
+        <input type="number" id="modalQtd" class="form-control" value="10">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-sm btn-secondary" style="padding:11px" onclick="fecharModal()">Cancelar</button>
+        <button class="btn-sm btn-success" style="padding:11px; flex:2" onclick="confirmarEdicao()">✅ Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ─────────────────────────────────────
+    //  ESTADO GLOBAL
+    // ─────────────────────────────────────
+    let estoqueGlobal = [];
+    let filtroAtivo = "todos";
+    let editandoId = null;
+    let historicoEntradas = [];
+
+    // Identificação do usuário logado
+    const usuario = JSON.parse(localStorage.getItem("hospital_user") || "{}");
+    if (usuario.nome) {
+      document.getElementById("nomeUsuario").textContent = "📦 " + usuario.nome;
+    }
+
+    // ─────────────────────────────────────
+    //  TOAST
+    // ─────────────────────────────────────
+    function showToast(msg, tipo = "success") {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.className = `toast toast-${tipo} show`;
+      setTimeout(() => { t.className = "toast"; }, 4000);
+    }
+
+    // ─────────────────────────────────────
+    //  TABS
+    // ─────────────────────────────────────
+    function setTab(tab) {
+      document.getElementById("painelNovo").style.display = tab === "novo" ? "block" : "none";
+      document.getElementById("painelRepor").style.display = tab === "repor" ? "block" : "none";
+      document.getElementById("tabNovo").className = "tab-btn" + (tab === "novo" ? " active" : "");
+      document.getElementById("tabRepor").className = "tab-btn" + (tab === "repor" ? " active" : "");
+      if (tab === "repor") preencherSelectRepor();
+    }
+
+    // ─────────────────────────────────────
+    //  CARREGAR ESTOQUE
+    // ─────────────────────────────────────
+    function carregarEstoque() {
+      fetch("/estoque")
+        .then(r => r.json())
+        .then(data => {
+          estoqueGlobal = data;
+          atualizarStats(data);
+          renderizarFiltros(data);
+          renderizarTabela(data);
+          verificarAlertas(data);
+        })
+        .catch(() => showToast("❌ Erro ao carregar estoque.", "error"));
+    }
+
+    // ─────────────────────────────────────
+    //  STATS
+    // ─────────────────────────────────────
+    function atualizarStats(data) {
+      document.getElementById("statItens").textContent = data.length;
+      document.getElementById("statOk").textContent = data.filter(m => m.quantidade > 10).length;
+      document.getElementById("statBaixo").textContent = data.filter(m => m.quantidade > 0 && m.quantidade <= 10).length;
+      document.getElementById("statZerado").textContent = data.filter(m => m.quantidade === 0).length;
+    }
+
+    function verificarAlertas(data) {
+      const baixos = data.filter(m => m.quantidade > 0 && m.quantidade <= 10);
+      const zerados = data.filter(m => m.quantidade === 0);
+      const el = document.getElementById("alertaEstoque");
+      const msgs = [];
+      if (zerados.length) msgs.push(`${zerados.length} medicamento(s) zerado(s): ${zerados.map(m => m.nome).join(", ")}`);
+      if (baixos.length) msgs.push(`${baixos.length} com estoque baixo`);
+      if (msgs.length) {
+        document.getElementById("alertaTexto").textContent = msgs.join(" | ") + " — repor com urgência!";
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    }
+
+    // ─────────────────────────────────────
+    //  FILTROS
+    // ─────────────────────────────────────
+    function renderizarFiltros(data) {
+      const cats = [...new Set(data.map(m => m.categoria).filter(Boolean))];
+      const el = document.getElementById("filterChips");
+      el.innerHTML = `<span class="chip ${filtroAtivo === 'todos' ? 'active' : ''}" onclick="setFiltro('todos', this)">Todos</span>`;
+      cats.forEach(c => {
+        el.innerHTML += `<span class="chip ${filtroAtivo === c ? 'active' : ''}" onclick="setFiltro('${c}', this)">${c}</span>`;
+      });
+    }
+
+    function setFiltro(cat, el) {
+      filtroAtivo = cat;
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+      el.classList.add("active");
+      filtrarTabela();
+    }
+
+    function filtrarTabela() {
+      const busca = document.getElementById("buscaMed").value.toLowerCase();
+      const filtrados = estoqueGlobal.filter(m => {
+        const matchCat = filtroAtivo === "todos" || m.categoria === filtroAtivo;
+        const matchBusc = m.nome.toLowerCase().includes(busca) || (m.categoria || "").toLowerCase().includes(busca);
+        return matchCat && matchBusc;
+      });
+      renderizarTabela(filtrados);
+    }
+
+    // ─────────────────────────────────────
+    //  RENDERIZAR TABELA
+    // ─────────────────────────────────────
+    function getStockClass(q) {
+      if (q === 0) return "stock-empty";
+      if (q <= 5) return "stock-critical";
+      if (q <= 10) return "stock-low";
+      return "stock-ok";
+    }
+    function getStockIcon(q) {
+      if (q === 0) return "🚫";
+      if (q <= 5) return "🔴";
+      if (q <= 10) return "🟡";
+      return "🟢";
+    }
+
+    function renderizarTabela(data) {
+      const tbody = document.getElementById("tabelaEstoque");
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📭</div><p>Nenhum item encontrado.</p></div></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = data.map(m => `
+    <tr>
+      <td>
+        <div class="med-name">${m.nome}</div>
+      </td>
+      <td><div class="med-cat">${m.categoria || "—"}</div></td>
+      <td>
+        <span class="stock-badge ${getStockClass(m.quantidade)}">
+          ${getStockIcon(m.quantidade)} ${m.quantidade}
+        </span>
+      </td>
+      <td style="color:var(--slate-500); font-size:13px">${m.unidade || "—"}</td>
+      <td>
+        <div class="action-row">
+          <button class="btn-sm btn-success" onclick="abrirModalEditar(${m.id}, '${m.nome.replace(/'/g, "\\'")}', ${m.quantidade})">
+            ✏️ Editar
+          </button>
+          <button class="btn-sm btn-danger-sm" onclick="removerMedicamento(${m.id}, '${m.nome.replace(/'/g, "\\'")}')">
+            🗑️
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+    }
+
+    // ─────────────────────────────────────
+    //  DAR ENTRADA (NOVO)
+    // ─────────────────────────────────────
+    function darEntrada() {
+      const nome = document.getElementById("emNome").value.trim();
+      const qtd = parseInt(document.getElementById("emQtd").value);
+      const unidade = document.getElementById("emUnidade").value;
+      const categoria = document.getElementById("emCategoria").value;
+
+      if (!nome) { showToast("⚠️ Digite o nome do medicamento.", "warning"); return; }
+      if (!qtd || qtd <= 0) { showToast("⚠️ Quantidade inválida.", "warning"); return; }
+
+      fetch("/estoque", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, quantidade: qtd, unidade, categoria })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.erro) { showToast("❌ " + data.erro, "error"); return; }
+          showToast("✅ " + data.mensagem, "success");
+          document.getElementById("emNome").value = "";
+          document.getElementById("emQtd").value = "10";
+
+          // Registra no histórico local
+          historicoEntradas.unshift({
+            tipo: "entrada",
+            nome: data.medicamento.nome,
+            qtd,
+            unidade: data.medicamento.unidade,
+            hora: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+            responsavel: usuario.nome || "Almoxarifado"
+          });
+          renderizarHistorico();
+          carregarEstoque();
+        })
+        .catch(() => showToast("❌ Erro ao registrar entrada.", "error"));
+    }
+
+    // ─────────────────────────────────────
+    //  REPOR EXISTENTE
+    // ─────────────────────────────────────
+    function preencherSelectRepor() {
+      const sel = document.getElementById("selReporMed");
+      sel.innerHTML = `<option value="">-- Selecione --</option>`;
+      estoqueGlobal.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.id;
+        opt.textContent = `${m.nome} (atual: ${m.quantidade} ${m.unidade})`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function reporEstoque() {
+      const id = document.getElementById("selReporMed").value;
+      const qtd = parseInt(document.getElementById("reporQtd").value);
+
+      if (!id) { showToast("⚠️ Selecione um medicamento.", "warning"); return; }
+      if (!qtd || qtd <= 0) { showToast("⚠️ Quantidade inválida.", "warning"); return; }
+
+      const med = estoqueGlobal.find(m => m.id == id);
+
+      fetch(`/estoque/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantidade: qtd })
+      })
+        .then(r => r.json())
+        .then(data => {
+          showToast(`✅ +${qtd} ${data.medicamento.unidade} adicionados! Novo total: ${data.medicamento.quantidade}`, "success");
+          document.getElementById("reporQtd").value = "10";
+          document.getElementById("reporObs").value = "";
+
+          historicoEntradas.unshift({
+            tipo: "reposicao",
+            nome: data.medicamento.nome,
+            qtd,
+            unidade: data.medicamento.unidade,
+            hora: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+            responsavel: usuario.nome || "Almoxarifado"
+          });
+          renderizarHistorico();
+          carregarEstoque();
+        })
+        .catch(() => showToast("❌ Erro ao repor estoque.", "error"));
+    }
+
+    // ─────────────────────────────────────
+    //  MODAL EDITAR QUANTIDADE
+    // ─────────────────────────────────────
+    function abrirModalEditar(id, nome, qtdAtual) {
+      editandoId = id;
+      document.getElementById("modalMedNome").textContent = `💊 ${nome} — Estoque atual: ${qtdAtual}`;
+      document.getElementById("modalQtd").value = "10";
+      document.getElementById("modalEditar").classList.add("open");
+    }
+
+    function fecharModal() {
+      document.getElementById("modalEditar").classList.remove("open");
+      editandoId = null;
+    }
+
+    function confirmarEdicao() {
+      const qtd = parseInt(document.getElementById("modalQtd").value);
+      if (isNaN(qtd)) { showToast("⚠️ Digite um número válido.", "warning"); return; }
+
+      fetch(`/estoque/${editandoId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantidade: qtd })
+      })
+        .then(r => r.json())
+        .then(data => {
+          const acao = qtd > 0 ? `+${qtd}` : `${qtd}`;
+          showToast(`✅ ${acao} ${data.medicamento.unidade}. Novo total: ${data.medicamento.quantidade}`, "success");
+          fecharModal();
+          carregarEstoque();
+        })
+        .catch(() => showToast("❌ Erro ao atualizar.", "error"));
+    }
+
+    // ─────────────────────────────────────
+    //  REMOVER MEDICAMENTO
+    // ─────────────────────────────────────
+    function removerMedicamento(id, nome) {
+      if (!confirm(`Tem certeza que deseja REMOVER "${nome}" do estoque?\nEsta ação não pode ser desfeita.`)) return;
+
+      fetch(`/estoque/${id}`, { method: "DELETE" })
+        .then(r => r.json())
+        .then(() => {
+          showToast(`🗑️ "${nome}" removido do estoque.`, "success");
+          carregarEstoque();
+        })
+        .catch(() => showToast("❌ Erro ao remover.", "error"));
+    }
+
+    // ─────────────────────────────────────
+    //  HISTÓRICO DE ENTRADAS (local)
+    // ─────────────────────────────────────
+    function carregarHistoricoEntradas() {
+      renderizarHistorico();
+    }
+
+    function renderizarHistorico() {
+      const div = document.getElementById("historicoEntradas");
+      if (historicoEntradas.length === 0) {
+        div.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><p>Nenhuma entrada registrada nesta sessão.</p></div>`;
+        return;
+      }
+      div.innerHTML = historicoEntradas.slice(0, 15).map(h => `
+    <div class="hist-item">
+      <div class="hist-icon ${h.tipo === 'reposicao' ? 'entrada' : 'entrada'}">
+        ${h.tipo === "reposicao" ? "📦" : "📥"}
+      </div>
+      <div class="hist-info">
+        <div class="hist-med">${h.nome}</div>
+        <div class="hist-sub">🕐 ${h.hora} • 👤 ${h.responsavel} • ${h.tipo === "reposicao" ? "Reposição" : "Novo cadastro"}</div>
+      </div>
+      <div class="hist-qty-pos">+${h.qtd} ${h.unidade}</div>
+    </div>
+  `).join("");
+    }
+
+    // ─────────────────────────────────────
+    //  FECHAR MODAL AO CLICAR FORA
+    // ─────────────────────────────────────
+    document.getElementById("modalEditar").addEventListener("click", function (e) {
+      if (e.target === this) fecharModal();
+    });
+
+    // ─────────────────────────────────────
+    //  INICIALIZAÇÃO
+    // ─────────────────────────────────────
+    carregarEstoque();
+    setInterval(carregarEstoque, 30000);
+  </script>
+
+</body>
+
+</html>

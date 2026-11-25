@@ -1,0 +1,204 @@
+{
+  "usuarios": [
+    {
+      "usuario": "admin",
+      "senha": "123",
+      "tipo": "admin",
+      "nome": "Administrador do Sistema"
+    },
+    {
+      "usuario": "almoxarifado",
+      "senha": "123",
+      "tipo": "almoxarifado",
+      "nome": "Almoxarifado / Estoque"
+    },
+    {
+      "usuario": "atendimento",
+      "senha": "123",
+      "tipo": "atendimento",
+      "nome": "Recepção / Atendimento"
+    },
+    {
+      "usuario": "triagem",
+      "senha": "123",
+      "tipo": "triagem",
+      "nome": "Enfermagem Triagem"
+    },
+    {
+      "usuario": "medico",
+      "senha": "123",
+      "tipo": "medico",
+      "nome": "Dr(a). Clínico Geral"
+    },
+    {
+      "usuario": "farmacia",
+      "senha": "123",
+      "tipo": "medicacoes",
+      "nome": "Farmácia / Medicações"
+    }
+  ],
+  "pacientes": [
+    {
+      "id": 1700000000001,
+      "nome": "Carlos Eduardo Santos",
+      "cpf": "123.456.789-00",
+      "tipo": "Particular",
+      "status": "triagem",
+      "createdAt": "2026-08-13T19:00:00.000Z"
+    },
+    {
+      "id": 1700000000002,
+      "nome": "Ana Maria Silva",
+      "cpf": "987.654.321-11",
+      "tipo": "Convenio",
+      "status": "triagem",
+      "createdAt": "2026-08-13T19:05:00.000Z"
+    }
+  ],
+  "triagens": [
+    {
+      "id": 1700000000101,
+      "nome": "Ana Maria Silva",
+      "sintoma": "febre",
+      "temperatura": 39.5,
+      "alergia": "Dipirona",
+      "observacao": "Paciente refere dor de cabeça intensa e febre alta há 2 dias.",
+      "risco": "vermelho",
+      "status": "aguardando_medico",
+      "createdAt": "2026-08-13T19:10:00.000Z"
+    },
+    {
+      "id": 1700000000102,
+      "nome": "João Pedro Souza",
+      "sintoma": "dor_leve",
+      "temperatura": 36.8,
+      "alergia": "Nenhuma",
+      "observacao": "Dor leve no joelho direito após esforço físico.",
+      "risco": "verde",
+      "status": "aguardando_medico",
+      "createdAt": "2026-08-13T19:15:00.000Z"
+    }
+  ],
+  "consultas": [
+    {
+      "id": 1700000000201,
+      "paciente": "Ana Maria Silva",
+      "diagnostico": "Infecção Viral das Vias Aéreas / Síndrome Gripal",
+      "medicacao": "Paracetamol",
+      "obs": "Repouso por 3 dias, hidratação abundante. Evitar Dipirona devido a alergia.",
+      "createdAt": "2026-08-13T19:25:00.000Z"
+    },
+    {
+      "id": 1793188422309,
+      "paciente": "Ana Maria Silva",
+      "diagnostico": "",
+      "medicacao": "Dipirona 500mg",
+      "obs": "Paciente refere dor de cabeça intensa e febre alta há 2 dias.",
+      "createdAt": "2026-10-28T11:53:42.309Z"
+    },
+    {
+      "id": 1795011583676,
+      "paciente": "Ana Maria Silva",
+      "diagnostico": "",
+      "medicacao": "Dipirona 500mg",
+      "obs": "Paciente refere dor de cabeça intensa e febre alta há 2 dias.",
+      "createdAt": "2026-11-18T14:19:43.676Z"
+    }
+  ],
+  "estoqueMedicamentos": [
+    {
+      "id": 1,
+      "nome": "Dipirona 500mg",
+      "quantidade": 50,
+      "unidade": "comprimidos",
+      "categoria": "Analgésico/Antipirético"
+    },
+    {
+      "id": 2,
+      "nome": "Paracetamol 750mg",
+      "quantidade": 80,
+      "unidade": "comprimidos",
+      "categoria": "Analgésico/Antipirético"
+    },
+    {
+      "id": 3,
+      "nome": "Ibuprofeno 600mg",
+      "quantidade": 30,
+      "unidade": "comprimidos",
+      "categoria": "Anti-inflamatório"
+    },
+    {
+      "id": 4,
+      "nome": "Amoxicilina 500mg",
+      "quantidade": 20,
+      "unidade": "cápsulas",
+      "categoria": "Antibiótico"
+    },
+    {
+      "id": 5,
+      "nome": "Azitromicina 500mg",
+      "quantidade": 15,
+      "unidade": "comprimidos",
+      "categoria": "Antibiótico"
+    },
+    {
+      "id": 6,
+      "nome": "Loratadina 10mg",
+      "quantidade": 40,
+      "unidade": "comprimidos",
+      "categoria": "Antialérgico"
+    },
+    {
+      "id": 7,
+      "nome": "Omeprazol 20mg",
+      "quantidade": 60,
+      "unidade": "cápsulas",
+      "categoria": "Protetor Gástrico"
+    },
+    {
+      "id": 8,
+      "nome": "Buscopan Composto",
+      "quantidade": 25,
+      "unidade": "comprimidos",
+      "categoria": "Antiespasmódico"
+    },
+    {
+      "id": 9,
+      "nome": "Dramin B6",
+      "quantidade": 35,
+      "unidade": "comprimidos",
+      "categoria": "Antiemético"
+    },
+    {
+      "id": 10,
+      "nome": "Soro Fisiológico 0,9%",
+      "quantidade": 20,
+      "unidade": "frascos",
+      "categoria": "Solução"
+    }
+  ],
+  "dispensacoes": [],
+  "tv_chamada": {
+    "id": "1700000000301",
+    "localTipo": "GUICHÊ",
+    "localNumero": "01",
+    "paciente": "Carlos Eduardo Santos",
+    "hora": "19:15"
+  },
+  "tv_historico": [
+    {
+      "id": "1700000000301",
+      "localTipo": "GUICHÊ",
+      "localNumero": "01",
+      "paciente": "Carlos Eduardo Santos",
+      "hora": "19:15"
+    },
+    {
+      "id": "1700000000300",
+      "localTipo": "CONSULTÓRIO",
+      "localNumero": "01",
+      "paciente": "Ana Maria Silva",
+      "hora": "19:10"
+    }
+  ]
+}
