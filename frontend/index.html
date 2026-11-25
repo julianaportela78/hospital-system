@@ -5,365 +5,858 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hospital Éter - Login</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <title>Hospital Éter | Acesso ao Sistema</title>
 
     <style>
-        /* =====================================
-           HOSPITAL ÉTER - IDENTIDADE VISUAL
-        ===================================== */
+        /* ==========================================
+           HOSPITAL ÉTER - NOVA IDENTIDADE VISUAL
+        ========================================== */
 
         :root {
-            --azul-petroleo: #81AEB6;
-            --azul-claro: #88D1FD;
-            --vermelho: #BB4342;
-            --verde-gelo: #E0FCFB;
-            --cinza: #474747;
-            --branco: #FFFFFF;
+            --primary: #81AEB6;
+            --primary-dark: #638F98;
+            --secondary: #88D1FD;
+            --danger: #BB4342;
+            --background: #F4F6F6;
+            --surface: #FFFFFF;
+            --surface-soft: #E0FCFB;
+            --dark: #474747;
+            --text: #343B3D;
+            --muted: #899294;
+            --border: #E6EAEA;
         }
 
-        /* CONFIGURAÇÃO GERAL */
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-
-            font-family: 'Segoe UI', Arial, sans-serif;
-            color: var(--cinza);
-
-            background:
-                radial-gradient(circle at 15% 20%, rgba(136, 209, 253, 0.45), transparent 35%),
-                radial-gradient(circle at 85% 80%, rgba(129, 174, 182, 0.35), transparent 35%),
-                linear-gradient(135deg, #E0FCFB 0%, #F5FBFC 50%, #EAF7FA 100%);
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
         }
 
-        /* CARTÃO DE LOGIN */
-        .login-card {
+        /* ==========================================
+           ESTRUTURA PRINCIPAL
+        ========================================== */
+
+        .page-container {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            padding: 24px;
+            gap: 24px;
+        }
+
+        /* ==========================================
+           PAINEL INSTITUCIONAL
+        ========================================== */
+
+        .institutional-panel {
             position: relative;
-            width: 100%;
-            max-width: 430px;
+            min-height: calc(100vh - 48px);
+            overflow: hidden;
 
-            padding: 42px 36px;
-            background: var(--branco);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
 
-            border: 1px solid rgba(129, 174, 182, 0.25);
-            border-radius: 22px;
+            padding: 55px 58px;
 
-            box-shadow:
-                0 25px 60px rgba(71, 71, 71, 0.10),
-                0 8px 20px rgba(129, 174, 182, 0.12);
-
-            animation: aparecer 0.7s ease;
+            background: var(--dark);
+            border-radius: 18px;
+            color: white;
         }
 
-        /* DETALHE SUPERIOR */
-        .login-card::before {
+        .institutional-panel::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 12%;
-            width: 76%;
-            height: 5px;
 
-            background: linear-gradient(
-                90deg,
-                var(--azul-petroleo),
-                var(--azul-claro),
-                var(--vermelho)
-            );
+            width: 520px;
+            height: 520px;
 
-            border-radius: 0 0 10px 10px;
+            right: -190px;
+            top: 15%;
+
+            border: 1px solid rgba(129, 174, 182, 0.25);
+            border-radius: 50%;
         }
 
-        /* CABEÇALHO */
-        .login-header {
-            text-align: center;
-            margin-bottom: 32px;
+        .institutional-panel::after {
+            content: "";
+            position: absolute;
+
+            width: 380px;
+            height: 380px;
+
+            right: -120px;
+            top: 25%;
+
+            border: 1px solid rgba(136, 209, 253, 0.2);
+            border-radius: 50%;
         }
 
-        .login-header div {
+        .brand {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+
             display: flex;
             align-items: center;
             justify-content: center;
 
-            width: 78px;
-            height: 78px;
-            margin: 0 auto 18px;
+            background: var(--primary);
+            border-radius: 13px;
 
-            font-size: 40px !important;
-
-            background: var(--verde-gelo);
-            border-radius: 22px;
-
-            box-shadow: 0 5px 15px rgba(129, 174, 182, 0.15);
+            color: white;
+            font-size: 29px;
+            font-weight: 300;
         }
 
-        .login-header h2 {
-            margin: 0 0 9px;
-
-            color: var(--cinza);
-            font-size: 28px;
-            font-weight: 750;
-            letter-spacing: -0.8px;
+        .brand-name {
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
-        .login-header p {
-            margin: 0;
+        .brand-subtitle {
+            display: block;
+            margin-top: 4px;
 
-            color: #858585;
+            color: #B8C1C2;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* CONTEÚDO INSTITUCIONAL */
+
+        .institutional-content {
+            position: relative;
+            z-index: 2;
+            max-width: 540px;
+            margin: 50px 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-bottom: 27px;
+
+            color: var(--secondary);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 25px;
+            height: 2px;
+            background: var(--secondary);
+        }
+
+        .institutional-content h1 {
+            max-width: 520px;
+
+            font-size: clamp(36px, 4.2vw, 59px);
+            line-height: 1.13;
+            font-weight: 600;
+            letter-spacing: -2px;
+        }
+
+        .institutional-content h1 span {
+            color: var(--primary);
+        }
+
+        .institutional-content p {
+            max-width: 430px;
+            margin-top: 25px;
+
+            color: #C3CACA;
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+        /* DESTAQUES */
+
+        .institutional-features {
+            position: relative;
+            z-index: 2;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+
+            max-width: 470px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 17px 15px;
+
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 10px;
+        }
+
+        .feature-icon {
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            background: rgba(129, 174, 182, 0.2);
+            border-radius: 9px;
+
+            color: var(--secondary);
+            font-size: 17px;
+        }
+
+        .feature span {
+            color: #E3E9E9;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* RODAPÉ INSTITUCIONAL */
+
+        .institutional-footer {
+            position: relative;
+            z-index: 2;
+
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+            color: #AEB8B9;
+            font-size: 11px;
+            letter-spacing: 0.4px;
+        }
+
+        /* ==========================================
+           PAINEL DE LOGIN
+        ========================================== */
+
+        .login-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px;
+        }
+
+        .login-content {
+            width: 100%;
+            max-width: 410px;
+        }
+
+        /* CABEÇALHO DO LOGIN */
+
+        .login-heading {
+            margin-bottom: 38px;
+        }
+
+        .login-heading .section-label {
+            display: block;
+            margin-bottom: 15px;
+
+            color: var(--primary-dark);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .login-heading h2 {
+            color: var(--dark);
+            font-size: 34px;
+            font-weight: 650;
+            letter-spacing: -1px;
+        }
+
+        .login-heading p {
+            margin-top: 12px;
+
+            color: var(--muted);
             font-size: 14px;
-            letter-spacing: 0.2px;
+            line-height: 1.7;
         }
 
-        /* CAMPOS DO FORMULÁRIO */
+        /* MENSAGEM DE ERRO */
+
+        .error-msg {
+            display: none;
+
+            padding: 14px 16px;
+            margin-bottom: 22px;
+
+            background: #FFF3F2;
+            border: 1px solid #F0D0CF;
+            border-left: 4px solid var(--danger);
+            border-radius: 8px;
+
+            color: var(--danger);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* FORMULÁRIO */
+
         .form-group {
-            margin-bottom: 21px;
+            margin-bottom: 23px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 9px;
+            margin-bottom: 10px;
 
-            color: var(--cinza);
+            color: var(--dark);
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 650;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+
+            transform: translateY(-50%);
+
+            color: #96A4A6;
+            font-size: 17px;
+            pointer-events: none;
         }
 
         .form-group input {
             width: 100%;
-            padding: 15px 16px;
+            height: 55px;
 
-            background: #F8FCFC;
-            border: 1.5px solid #DCEBEC;
-            border-radius: 11px;
+            padding: 0 16px 0 46px;
 
-            color: var(--cinza);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+
+            color: var(--dark);
             font-family: inherit;
             font-size: 14px;
 
+            outline: none;
             transition: all 0.25s ease;
         }
 
         .form-group input::placeholder {
-            color: #A6B3B5;
+            color: #B2BABC;
         }
 
         .form-group input:hover {
-            border-color: var(--azul-petroleo);
+            border-color: #B7D0D3;
         }
 
         .form-group input:focus {
-            outline: none;
-
-            background: var(--branco);
-            border-color: var(--azul-petroleo);
-
-            box-shadow: 0 0 0 4px rgba(129, 174, 182, 0.17);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(129, 174, 182, 0.12);
         }
 
-        /* BOTÃO ENTRAR */
+        /* BOTÃO PRINCIPAL */
+
         .btn-submit {
             width: 100%;
-            padding: 15px;
-            margin-top: 8px;
+            height: 55px;
 
-            background: linear-gradient(
-                135deg,
-                #81AEB6,
-                #659AA4
-            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
 
-            color: var(--branco);
+            margin-top: 12px;
+
+            background: var(--primary-dark);
             border: none;
-            border-radius: 11px;
+            border-radius: 9px;
 
+            color: white;
             font-family: inherit;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             letter-spacing: 0.4px;
 
             cursor: pointer;
-
-            box-shadow: 0 7px 18px rgba(129, 174, 182, 0.28);
-
             transition: all 0.25s ease;
         }
 
         .btn-submit:hover {
-            background: linear-gradient(
-                135deg,
-                #659AA4,
-                #527F89
-            );
-
+            background: var(--dark);
             transform: translateY(-2px);
-            box-shadow: 0 10px 22px rgba(129, 174, 182, 0.35);
+            box-shadow: 0 8px 20px rgba(71, 71, 71, 0.13);
         }
 
         .btn-submit:active {
-            transform: scale(0.98);
+            transform: scale(0.99);
         }
 
         .btn-submit:disabled {
-            opacity: 0.7;
+            opacity: 0.65;
             cursor: not-allowed;
             transform: none;
         }
 
-        /* MENSAGEM DE ERRO */
-        .error-msg {
-            display: none;
-
-            padding: 13px;
-            margin-bottom: 20px;
-
-            background: #FFF0EF;
-            border: 1px solid rgba(187, 67, 66, 0.25);
-            border-left: 4px solid var(--vermelho);
-            border-radius: 9px;
-
-            color: var(--vermelho);
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
+        .btn-arrow {
+            font-size: 18px;
+            transition: transform 0.2s ease;
         }
 
-        /* LINKS DE ACESSO */
-        .quick-links {
-            margin-top: 30px;
-            padding-top: 22px;
-
-            border-top: 1px solid #E9F0F0;
-
-            text-align: center;
-            font-size: 13px;
+        .btn-submit:hover .btn-arrow {
+            transform: translateX(4px);
         }
 
-        .quick-links span {
-            color: #999 !important;
+        /* AVISO DE SEGURANÇA */
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            margin-top: 24px;
+
+            color: #9AA4A5;
+            font-size: 11px;
+        }
+
+        .security-note span {
+            color: var(--primary-dark);
+            font-size: 15px;
+        }
+
+        /* ACESSO ADMINISTRATIVO */
+
+        .management-access {
+            margin-top: 42px;
+            padding-top: 25px;
+
+            border-top: 1px solid var(--border);
+        }
+
+        .management-access p {
+            margin-bottom: 16px;
+
+            color: #929C9D;
+            font-size: 11px;
+            font-weight: 650;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        .management-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .management-links a {
+            flex: 1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            padding: 13px 10px;
+
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            color: var(--dark);
             font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .quick-links a {
-            display: inline-block;
-            margin: 5px 5px 0;
-
-            color: #659AA4;
-            font-weight: 700;
+            font-weight: 650;
             text-decoration: none;
 
             transition: all 0.2s ease;
         }
 
-        .quick-links a:hover {
-            color: var(--vermelho);
-            text-decoration: none;
+        .management-links a:hover {
+            background: var(--surface-soft);
+            border-color: var(--primary);
+            color: var(--primary-dark);
         }
 
-        /* ANIMAÇÃO */
-        @keyframes aparecer {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+        /* RODAPÉ DO LOGIN */
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .login-footer {
+            margin-top: 50px;
+
+            color: #A8B0B1;
+            font-size: 10px;
+            text-align: center;
+            line-height: 1.8;
         }
 
-        /* RESPONSIVIDADE */
-        @media (max-width: 480px) {
-            body {
+        /* ==========================================
+           RESPONSIVIDADE
+        ========================================== */
+
+        @media (max-width: 1000px) {
+            .page-container {
+                grid-template-columns: 0.9fr 1.1fr;
                 padding: 16px;
+                gap: 16px;
             }
 
-            .login-card {
-                padding: 35px 24px;
-                border-radius: 18px;
+            .institutional-panel {
+                padding: 40px 32px;
             }
 
-            .login-header h2 {
-                font-size: 25px;
+            .login-panel {
+                padding: 25px;
+            }
+
+            .institutional-content h1 {
+                font-size: 40px;
             }
         }
+
+        @media (max-width: 750px) {
+            .page-container {
+                display: flex;
+                flex-direction: column;
+                padding: 12px;
+            }
+
+            .institutional-panel {
+                min-height: auto;
+                padding: 28px 25px;
+                border-radius: 14px;
+            }
+
+            .institutional-content {
+                margin: 55px 0 35px;
+            }
+
+            .institutional-content h1 {
+                font-size: 37px;
+            }
+
+            .institutional-content p {
+                font-size: 13px;
+            }
+
+            .institutional-features {
+                margin-bottom: 30px;
+            }
+
+            .institutional-footer {
+                padding-top: 18px;
+            }
+
+            .login-panel {
+                padding: 45px 20px;
+            }
+
+            .login-content {
+                max-width: 480px;
+            }
+
+            .login-heading h2 {
+                font-size: 30px;
+            }
+
+            .login-footer {
+                margin-top: 35px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .institutional-content h1 {
+                font-size: 32px;
+            }
+
+            .institutional-features {
+                grid-template-columns: 1fr;
+            }
+
+            .management-links {
+                flex-direction: column;
+            }
+
+            .login-panel {
+                padding: 35px 12px;
+            }
+        }
+
+        /* ACESSIBILIDADE */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
     </style>
 </head>
 
 <body>
 
-    <div class="login-card">
+    <main class="page-container">
 
-        <div class="login-header">
-            <div style="font-size: 40px;">🏥</div>
+        <!-- PAINEL INSTITUCIONAL -->
 
-            <h2>Hospital Éter</h2>
+        <section class="institutional-panel">
 
-            <p>Acesse com suas credenciais do setor</p>
-        </div>
+            <header class="brand">
 
-        <div id="msgErro" class="error-msg"></div>
+                <div class="brand-icon">✚</div>
 
-        <form onsubmit="login(event)">
+                <div>
+                    <div class="brand-name">HOSPITAL ÉTER</div>
 
-            <div class="form-group">
-                <label for="usuario">Usuário / Login</label>
+                    <span class="brand-subtitle">
+                        Sistema Integrado de Saúde
+                    </span>
+                </div>
 
-                <input
-                    id="usuario"
-                    placeholder="Ex: admin, medico, triagem..."
-                    required
-                    autofocus
-                >
+            </header>
+
+            <div class="institutional-content">
+
+                <span class="eyebrow">
+                    Cuidado e excelência
+                </span>
+
+                <h1>
+                    Tecnologia a serviço da
+                    <span>vida.</span>
+                </h1>
+
+                <p>
+                    Um ambiente integrado para facilitar processos,
+                    conectar profissionais e proporcionar uma
+                    gestão hospitalar mais eficiente e organizada.
+                </p>
+
             </div>
 
-            <div class="form-group">
-                <label for="senha">Senha</label>
+            <div class="institutional-features">
 
-                <input
-                    id="senha"
-                    type="password"
-                    placeholder="Sua senha de acesso"
-                    required
-                >
+                <div class="feature">
+
+                    <div class="feature-icon">✚</div>
+
+                    <span>
+                        Gestão de saúde
+                    </span>
+
+                </div>
+
+                <div class="feature">
+
+                    <div class="feature-icon">⌘</div>
+
+                    <span>
+                        Sistema integrado
+                    </span>
+
+                </div>
+
+                <div class="feature">
+
+                    <div class="feature-icon">◈</div>
+
+                    <span>
+                        Organização de dados
+                    </span>
+
+                </div>
+
+                <div class="feature">
+
+                    <div class="feature-icon">✓</div>
+
+                    <span>
+                        Atendimento eficiente
+                    </span>
+
+                </div>
+
             </div>
 
-            <button
-                type="submit"
-                class="btn-submit"
-                id="btnEntrar"
-            >
-                Entrar no Sistema
-            </button>
+            <footer class="institutional-footer">
 
-        </form>
+                Hospital Éter © 2026
+                <br>
+                Sistema interno de gerenciamento hospitalar.
 
-        <div class="quick-links">
+            </footer>
 
-            <span style="color:#94a3b8; display:block; margin-bottom: 6px;">
-                Acesso Rápido de Gestão:
-            </span>
+        </section>
 
-            <a href="admin.html">Painel Admin</a> •
-            <a href="tv.html" target="_blank">Painel TV</a>
 
-        </div>
+        <!-- PAINEL DE AUTENTICAÇÃO -->
 
-    </div>
+        <section class="login-panel">
+
+            <div class="login-content">
+
+                <div class="login-heading">
+
+                    <span class="section-label">
+                        Área de acesso
+                    </span>
+
+                    <h2>Bem-vindo de volta.</h2>
+
+                    <p>
+                        Entre com suas credenciais para acessar
+                        a plataforma de gestão hospitalar.
+                    </p>
+
+                </div>
+
+
+                <!-- MENSAGEM DE ERRO -->
+
+                <div id="msgErro" class="error-msg"></div>
+
+
+                <!-- FORMULÁRIO -->
+
+                <form onsubmit="login(event)">
+
+                    <div class="form-group">
+
+                        <label for="usuario">
+                            Usuário / Login
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">♙</span>
+
+                            <input
+                                id="usuario"
+                                type="text"
+                                placeholder="Digite seu usuário"
+                                required
+                                autofocus
+                                autocomplete="username"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="senha">
+                            Senha de acesso
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">♧</span>
+
+                            <input
+                                id="senha"
+                                type="password"
+                                placeholder="Digite sua senha"
+                                required
+                                autocomplete="current-password"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn-submit"
+                        id="btnEntrar"
+                    >
+
+                        <span>Entrar no sistema</span>
+
+                        <span class="btn-arrow">→</span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- SEGURANÇA -->
+
+                <div class="security-note">
+
+                    <span>◈</span>
+
+                    Acesso restrito a profissionais autorizados.
+
+                </div>
+
+
+                <!-- ACESSO DE GESTÃO -->
+
+
+
+
+                <footer class="login-footer">
+
+                    Hospital Éter — Plataforma de Gestão Hospitalar
+
+                    <br>
+
+                    Ambiente digital de acesso interno.
+
+                </footer>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         JAVASCRIPT - AUTENTICAÇÃO ORIGINAL
+    ========================================== -->
 
     <script>
+
         function login(e) {
+
             if (e) e.preventDefault();
 
             const erroDiv = document.getElementById("msgErro");
@@ -372,35 +865,53 @@
             erroDiv.style.display = "none";
 
             btn.disabled = true;
-            btn.innerText = "Verificando...";
+            btn.innerHTML = "<span>Verificando acesso...</span>";
 
             fetch("/login", {
+
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json"
                 },
+
                 body: JSON.stringify({
+
                     usuario: document.getElementById("usuario").value.trim(),
+
                     senha: document.getElementById("senha").value
+
                 })
+
             })
 
             .then(async r => {
+
                 const data = await r.json();
 
                 if (!r.ok || data.erro) {
+
                     throw new Error(data.erro || "Credenciais inválidas");
+
                 }
 
                 return data;
+
             })
 
             .then(data => {
 
                 // Salva sessão local para identificação
-                localStorage.setItem("hospital_user", JSON.stringify(data));
+
+                localStorage.setItem(
+                    "hospital_user",
+                    JSON.stringify(data)
+                );
+
+                // Rotas de acesso de cada setor
 
                 const rotas = {
+
                     admin: "admin.html",
                     atendimento: "atendimento.html",
                     triagem: "triagem.html",
@@ -408,34 +919,63 @@
                     medicacoes: "medicacoes.html",
                     almoxarifado: "almoxarifado.html",
                     tv: "tv.html"
+
                 };
 
                 if (rotas[data.tipo]) {
+
                     location.href = rotas[data.tipo];
+
                 } else {
+
                     location.href = data.tipo + ".html";
+
                 }
 
             })
 
             .catch(err => {
-                erroDiv.innerText = err.message || "Usuário ou senha inválidos!";
+
+                erroDiv.innerText =
+                    err.message || "Usuário ou senha inválidos!";
+
                 erroDiv.style.display = "block";
+
             })
 
             .finally(() => {
+
                 btn.disabled = false;
-                btn.innerText = "Entrar no Sistema";
+
+                btn.innerHTML = `
+                    <span>Entrar no sistema</span>
+                    <span class="btn-arrow">→</span>
+                `;
+
             });
+
         }
 
-        // Atalho secreto: Ctrl + Alt + A redireciona para admin2.html
+
+        // Atalho secreto: Ctrl + Alt + A
+        // Redireciona para admin2.html
+
         window.addEventListener("keydown", function(e) {
-            if (e.ctrlKey && e.altKey && (e.key === "a" || e.key === "A")) {
+
+            if (
+                e.ctrlKey &&
+                e.altKey &&
+                (e.key === "a" || e.key === "A")
+            ) {
+
                 e.preventDefault();
+
                 window.location.href = "admin2.html";
+
             }
+
         });
+
     </script>
 
 </body>
