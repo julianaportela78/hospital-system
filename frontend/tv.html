@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Hospital Éter - Painel de Chamadas</title>
 
   <style>
@@ -21,259 +22,282 @@
       --dark: #474747;
       --background: #F2F5F5;
       --white: #FFFFFF;
-      --red: #BB4342;
       --border: #E6ECEC;
+      --red: #BB4342;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
     }
 
     body {
-      min-height: 100vh;
-      width: 100%;
-      overflow: hidden;
       background: var(--background);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2vh 2vw;
+      overflow: hidden;
+      padding: 16px;
     }
 
-    /* Estrutura principal */
+    /* ESTRUTURA PRINCIPAL */
 
     .tv-container {
       display: flex;
       width: 100%;
-      height: 96vh;
-      gap: 20px;
+      height: calc(100vh - 32px);
+      gap: 16px;
     }
 
     .left-panel {
       display: flex;
       flex-direction: column;
-      width: 34%;
-      gap: 20px;
+      width: 32%;
       min-width: 0;
+      gap: 16px;
     }
 
     .right-panel {
       display: flex;
       flex-direction: column;
-      width: 66%;
-      gap: 20px;
+      width: 68%;
       min-width: 0;
+      gap: 16px;
     }
 
-    /* Estilo geral dos painéis */
+    /* PAINÉIS GERAIS */
 
     .box {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 28px;
+      border-radius: 18px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      box-shadow: 0 5px 20px rgba(35, 65, 70, 0.07);
+      box-shadow: 0 4px 15px rgba(35, 65, 70, 0.06);
+      min-width: 0;
       min-height: 0;
+      overflow: hidden;
     }
 
     .box-title {
       color: var(--dark);
-      font-size: clamp(18px, 2vw, 30px);
+      font-size: clamp(16px, 1.6vw, 25px);
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      line-height: 1.2;
+      margin-bottom: 15px;
+      max-width: 100%;
+      overflow-wrap: anywhere;
     }
 
-    /* Painel do local */
+    /* LOCAL DE ATENDIMENTO */
 
     .local-box {
       flex: 1;
       background: linear-gradient(145deg, #FFFFFF, #EAF6F6);
-      border-top: 8px solid var(--primary);
+      border-top: 6px solid var(--primary);
     }
 
     .local-icon {
-      font-size: clamp(30px, 4vw, 55px);
+      font-size: clamp(25px, 3vw, 42px);
+      margin-bottom: 8px;
+    }
+
+    .local-box .box-title {
       margin-bottom: 10px;
     }
 
     .local-number {
       color: var(--primary);
-      font-size: clamp(90px, 11vw, 180px);
+      font-size: clamp(65px, 8vw, 125px);
       font-weight: 900;
       line-height: 1;
-      letter-spacing: -5px;
-      text-shadow: 0 5px 15px rgba(129, 174, 182, 0.15);
+      letter-spacing: -3px;
+      max-width: 100%;
+      overflow-wrap: anywhere;
     }
 
     .local-type {
       color: var(--dark);
-      font-size: clamp(20px, 2.2vw, 34px);
+      font-size: clamp(15px, 1.6vw, 23px);
       font-weight: 800;
-      margin-top: 15px;
+      margin-top: 12px;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
 
     .local-caption {
       color: #829092;
-      font-size: clamp(13px, 1.2vw, 18px);
-      margin-top: 12px;
+      font-size: clamp(11px, 1vw, 15px);
+      margin-top: 8px;
     }
 
-    /* Histórico de chamadas */
+    /* HISTÓRICO */
 
     .history-box {
       flex: 1;
       justify-content: flex-start;
       align-items: stretch;
-      padding: 25px;
+      padding: 18px;
     }
 
     .history-box .box-title {
-      font-size: clamp(16px, 1.7vw, 25px);
+      font-size: clamp(14px, 1.4vw, 21px);
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 16px;
     }
 
     .history-header {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .history-header span {
-      font-size: 22px;
+      font-size: 19px;
     }
 
     #history-list {
       list-style: none;
       width: 100%;
       color: var(--dark);
-      font-size: clamp(14px, 1.35vw, 21px);
+      font-size: clamp(12px, 1.15vw, 17px);
       font-weight: 700;
       text-align: left;
+      line-height: 1.35;
     }
 
     #history-list li {
-      padding: 15px 12px;
-      margin-bottom: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
       background: #F5F9F9;
-      border-radius: 10px;
+      border-radius: 9px;
       border-left: 4px solid var(--primary);
       overflow-wrap: anywhere;
     }
 
-    .history-empty {
+    #history-list .history-empty {
       color: #929D9F;
       text-align: center;
-      font-size: clamp(14px, 1.2vw, 18px);
-      padding: 20px 5px;
       font-weight: 400;
+      border: none;
+      background: transparent;
+      padding: 15px 5px;
     }
 
-    /* Painel do paciente */
+    /* PACIENTE CHAMADO */
 
     .patient-box {
       flex: 3;
       position: relative;
-      overflow: hidden;
       background: linear-gradient(145deg, #FFFFFF 55%, #E9F7F7);
-      border-top: 8px solid var(--primary);
+      border-top: 6px solid var(--primary);
     }
 
     .patient-label {
       color: var(--primary);
-      font-size: clamp(18px, 2vw, 30px);
+      font-size: clamp(15px, 1.7vw, 25px);
       font-weight: 800;
-      letter-spacing: 5px;
-      margin-bottom: 35px;
+      letter-spacing: 3px;
+      margin-bottom: 18px;
+    }
+
+    .patient-box .box-title {
+      margin-bottom: 20px;
     }
 
     .patient-name {
       color: var(--dark);
-      font-size: clamp(45px, 6.5vw, 100px);
+      font-size: clamp(34px, 5vw, 76px);
       font-weight: 900;
       line-height: 1.15;
-      overflow-wrap: anywhere;
-      max-width: 100%;
       text-transform: uppercase;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      max-width: 100%;
     }
 
     .patient-decoration {
-      width: 100px;
-      height: 6px;
+      width: 75px;
+      height: 5px;
       background: var(--secondary);
       border-radius: 10px;
-      margin-top: 35px;
+      margin-top: 22px;
+      flex-shrink: 0;
     }
 
     .waiting-message {
       color: #849193;
-      font-size: clamp(18px, 2vw, 28px);
+      font-size: clamp(13px, 1.3vw, 19px);
+      font-weight: 600;
+      margin-top: 16px;
+      line-height: 1.4;
+      max-width: 90%;
+    }
+
+    .call-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      color: #829092;
+      font-size: clamp(10px, 0.95vw, 14px);
       font-weight: 600;
       margin-top: 20px;
     }
 
-    /* Identidade do hospital */
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #65B99A;
+      box-shadow: 0 0 0 4px rgba(101, 185, 154, 0.13);
+    }
+
+    /* LOGO */
 
     .logo-box {
       flex: 0.8;
       flex-direction: row;
       justify-content: center;
-      gap: 25px;
+      gap: 18px;
       background: var(--dark);
-      color: white;
-      padding: 20px;
+      color: var(--white);
+      padding: 15px;
     }
 
     .logo-icon {
-      font-size: clamp(35px, 4vw, 58px);
+      font-size: clamp(30px, 3.5vw, 48px);
+      flex-shrink: 0;
     }
 
     .logo-content {
       text-align: left;
+      min-width: 0;
     }
 
     .logo-text {
-      color: white;
-      font-size: clamp(25px, 3vw, 45px);
+      color: var(--white);
+      font-size: clamp(21px, 2.5vw, 36px);
       font-weight: 900;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
+      overflow-wrap: anywhere;
     }
 
     .logo-subtitle {
       color: #BFD5D7;
-      font-size: clamp(12px, 1.2vw, 17px);
-      letter-spacing: 3px;
-      margin-top: 7px;
+      font-size: clamp(9px, 0.95vw, 14px);
+      letter-spacing: 2px;
+      margin-top: 6px;
     }
 
-    /* Indicador de chamada */
-
-    .call-indicator {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #829092;
-      font-size: clamp(12px, 1.1vw, 16px);
-      font-weight: 600;
-      margin-top: 25px;
-    }
-
-    .status-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #65B99A;
-      box-shadow: 0 0 0 5px rgba(101, 185, 154, 0.13);
-    }
-
-    /* Animação de nova chamada */
+    /* ANIMAÇÃO DE NOVA CHAMADA */
 
     @keyframes flash {
       0%, 100% {
@@ -289,15 +313,15 @@
       animation: flash 0.5s ease 3;
     }
 
-    /* Responsividade */
+    /* TELAS MENORES */
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       body {
         padding: 10px;
       }
 
       .tv-container {
-        height: 96vh;
+        height: calc(100vh - 20px);
         gap: 10px;
       }
 
@@ -307,7 +331,7 @@
       }
 
       .box {
-        padding: 12px;
+        padding: 14px;
         border-radius: 14px;
       }
 
@@ -315,31 +339,19 @@
         padding: 12px;
       }
 
-      .history-box .box-title {
-        letter-spacing: 1px;
-        margin-bottom: 12px;
-      }
-
       #history-list li {
-        padding: 10px 7px;
-        margin-bottom: 7px;
-      }
-
-      .logo-box {
-        gap: 10px;
-      }
-
-      .logo-text {
-        letter-spacing: 1px;
-      }
-
-      .logo-subtitle {
-        letter-spacing: 1px;
+        padding: 8px;
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
+      body {
+        overflow: auto;
+      }
+
       .tv-container {
+        height: auto;
+        min-height: calc(100vh - 20px);
         flex-direction: column;
       }
 
@@ -350,36 +362,19 @@
 
       .left-panel {
         flex-direction: row;
-        height: 35%;
+        height: 230px;
       }
 
       .right-panel {
-        height: 65%;
-      }
-
-      .local-box,
-      .history-box {
-        flex: 1;
+        height: 470px;
       }
 
       .local-number {
-        font-size: 16vw;
+        font-size: clamp(50px, 13vw, 75px);
       }
 
       .patient-name {
-        font-size: 9vw;
-      }
-
-      .patient-label {
-        margin-bottom: 15px;
-      }
-
-      .patient-decoration {
-        margin-top: 15px;
-      }
-
-      .logo-box {
-        flex: 0.5;
+        font-size: clamp(30px, 8vw, 48px);
       }
 
       .history-box .box-title {
@@ -391,7 +386,12 @@
       }
 
       #history-list li {
-        padding: 7px 5px;
+        padding: 6px;
+        margin-bottom: 5px;
+      }
+
+      .logo-box {
+        min-height: 95px;
       }
     }
   </style>
@@ -478,12 +478,13 @@
 
       </div>
 
-      <!-- IDENTIDADE VISUAL -->
+      <!-- IDENTIDADE DO HOSPITAL -->
       <div class="box logo-box">
 
         <div class="logo-icon">🏥</div>
 
         <div class="logo-content">
+
           <div class="logo-text">
             Hospital Éter
           </div>
@@ -491,6 +492,7 @@
           <div class="logo-subtitle">
             CUIDAR É NOSSA ESSÊNCIA
           </div>
+
         </div>
 
       </div>
@@ -502,7 +504,7 @@
   <script>
     let ultimoId = null;
 
-    // Atualiza a chamada atual e o histórico da TV.
+    // Busca a chamada atual e o histórico.
     function atualizar() {
       fetch("/tv/chamada")
         .then(r => {
@@ -541,7 +543,7 @@
             }
           }
 
-          // Atualiza o histórico de chamadas.
+          // Atualiza o histórico.
           const list = document.getElementById("history-list");
 
           list.innerHTML = "";
